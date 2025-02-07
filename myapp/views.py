@@ -1,6 +1,5 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.urls import reverse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .models import Question, Answer, Result
 from .forms import NameForm, AnswerForm
@@ -34,6 +33,13 @@ def question(request):
             setattr(result, f'scale_{answer.scale}', getattr(result, f'scale_{answer.scale}') + 1)
             result.save()
             request.session['question_index'] = question_index + 1
+
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True,
+                    'next_url': reverse('question')  # URL для следующего вопроса
+                })
+
             return redirect('question')
     else:
         form = AnswerForm(question=question)
