@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Введите ваше имя</title>
+</head>
+<body>
+    <h1>Введите ваше имя</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Начать тест</button>
+    </form>
+</body>
+</html>
